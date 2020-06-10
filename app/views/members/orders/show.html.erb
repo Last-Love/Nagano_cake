@@ -36,15 +36,15 @@
                 <tr>
                     <th>ステータス</th>
                     <td>
-                        <% if order.order_status == 1 %>
+                        <% if @order.order_status == 1 %>
                             入金待ち
-                        <% elsif order.order_status == 2 %>
+                        <% elsif @order.order_status == 2 %>
                             入金確認
-                        <% elsif order.order_status == 3 %>
+                        <% elsif @order.order_status == 3 %>
                             製作中
-                        <% elsif order.order_status == 4 %>
+                        <% elsif @order.order_status == 4 %>
                             発送準備中
-                        <% elsif order.order_status == 5 %>
+                        <% elsif @order.order_status == 5 %>
                             発送済み
                         <% end %>
                     </td>

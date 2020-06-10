@@ -1,7 +1,16 @@
 class Admins::OrdersController < ApplicationController
 	before_action :authenticate_admin!
 	def index
-		@orders = Order.all
+		@version = params[:version].to_s
+
+		if @version == 'today'
+			@orders = Order.where(created_at: Time.zone.now.all_day).page(params[:page]).per(10)
+		elsif @version == 'member'
+			@member = Member.find(params[:id])
+			@orders = @member.orders.page(params[:page]).per(10)
+		else
+			@orders = Order.all.page(params[:page]).per(10)
+		end
 	end
 
 	def show

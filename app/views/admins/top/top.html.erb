@@ -2,6 +2,7 @@
   <h3 style="padding-left: 50px;">管理者画面</h3>
 	<div class="row", style="padding-top: 100px;">
    		<h4>本日の注文件数</h4>
-   		<span class="h4", style="padding-left: 50px;"><%= link_to "#{@orders.count}", admins_orders_path %>件</span>
+   		<span class="h4", style="padding-left: 50px;"><%= link_to "#{@orders.count}",
+   			 admins_orders_path(version: 'today') %>件</span>
 	</div>
 </div>

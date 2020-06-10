@@ -5,7 +5,7 @@
                 <tr class="border-bottom">
                     <th>ジャンル検索</th>
                 </tr>
-                <% ProductGenre.all.each do |genre| %>
+                <% ProductGenre.where(is_enabled: true).each do |genre| %>
                 <tr>
                     <th>
                         <%= link_to members_products_genre_path(genre) do %>
@@ -17,7 +17,7 @@
             </table>
         </div>
         <div class="col">
-            <h3><b>商品一覧</b>(全<%= @product.count %>件)</h3>
+            <h3><b>商品一覧</b>(全<%= @pn %>件)</h3>
             <% @products.each do |product| %>
             <div class="float-left" , style="padding: 10px;">
                 <%= link_to members_product_path(product) do %>

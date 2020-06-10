@@ -8,7 +8,7 @@
                 <tr class="border-bottom">
                     <th>ジャンル検索</th>
                 </tr>
-                <% ProductGenre.all.each do |genre| %>
+                <% ProductGenre.where(is_enabled: true).each do |genre| %>
                 <tr>
                     <th>
                         <%= link_to members_products_genre_path(genre) do %>

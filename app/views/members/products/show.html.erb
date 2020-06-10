@@ -5,7 +5,7 @@
                 <tr class="border-bottom">
                     <th>ジャンル検索</th>
                 </tr>
-                <% ProductGenre.all.each do |genre| %>
+                <% ProductGenre.where(is_enabled: true).each do |genre| %>
                 <tr>
                     <th>
                         <%= link_to members_products_genre_path(genre) do %>
@@ -31,7 +31,6 @@
         <div class="col-4 offset-9">
             <%= form_with model: @cart_item, url: members_cart_items_path, local: true do |form| %>
             <%= form.number_field :number, style: "width: 150px;" %>
-            <%= form.hidden_field :member_id, value: current_member.id %>
             <%= form.hidden_field :product_id, value: @product.id %>
             <%= form.submit "カートに入れる", class: "btn btn-primary" %>
             <% end %>

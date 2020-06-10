@@ -1,6 +1,3 @@
-<h1>Admins_Products_Index</h1>
-<%= link_to '商品新規登録', new_admins_product_path %>
-<%= link_to '商品ジャンル一覧', admins_product_genres_path %>
 <div class="container">
 	<h2>商品一覧</h2>
 	<div class="text-right">
@@ -19,21 +16,19 @@
 		</thead>
 		<tbody>
 			<% @products.each do |product| %>
-				<% if product.product_genre.is_enabled == true %>
-					<tr>
-						<td><%= product.id %></td>
-						<td><%= link_to product.name, admins_product_path(product) %></td>
-						<td><%= product.unit_price %></td>
-						<td><%= product.product_genre.category %></td>
-						<% if product.is_sales == true %>
-							<td>販売中</td>
-						<% elsif product.is_sales == false %>
-							<td>販売停止中</td>
-						<% else %>
-							<td></td>
-						<% end %>
-					</tr>
-				<% end %>
+				<tr>
+					<td><%= product.id %></td>
+					<td><%= link_to product.name, admins_product_path(product) %></td>
+					<td><%= product.unit_price %></td>
+					<td><%= product.product_genre.category %></td>
+					<% if product.is_sales == true %>
+						<td>販売中</td>
+					<% elsif product.is_sales == false %>
+						<td>販売停止中</td>
+					<% else %>
+						<td></td>
+					<% end %>
+				</tr>
 			<% end %>
 		</tbody>
 	</table>

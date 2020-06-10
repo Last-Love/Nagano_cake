@@ -1,5 +1,5 @@
 class Members::OrdersController < ApplicationController
-
+  before_action :authenticate_member!
   def index
     @member = current_member
     @orders = @member.orders
@@ -13,10 +13,36 @@ class Members::OrdersController < ApplicationController
     @order = Order.new
   end
 
+  def confirm
+    @order = Order.new(order_params)
+    @carts = current_member.cart_items
+    @tax = 1.1
+    case params[:shipping]
+    when "1"
+      @order.postcode = current_member.postcode
+      @order.address = current_member.address
+      @order.addressee = current_member.last_name + current_member.first_name
+    when "2"
+      @shipping_address = ShippingAddress.find(params[:order][:shipping_address])
+      @order.postcode = @shipping_address.postcode
+      @order.address = @shipping_address.address
+      @order.addressee = @shipping_address.addressee
+    when "3"
+      @sa = ShippingAddress.new
+      @sa.member_id = current_member.id
+      @sa.postcode = params[:order][:postcode]
+      @sa.address = params[:order][:address]
+      @sa.addressee = params[:order][:addressee]
+      @sa.save
+      @order.postcode = @sa.postcode
+      @order.address = @sa.address
+      @order.addressee = @sa.addressee
+    end
+  end
+
   def create
     @tax = 1.1
     @order =Order.new(order_params)
-    #@oreder.member_id = current_member.id
     @order.save
     current_member.cart_items.each do |cart|
       @op = OrderProduct.new(order_product_params)
@@ -26,24 +52,18 @@ class Members::OrdersController < ApplicationController
       @op.number = cart.number
       @op.save
     end
+
+#    if params[:shipping] == "3"
+#      @sa = ShippingAddress.new(shipping_address_params)
+#      @sa.member_id = current_member.id
+#      @sa.postcode = params[:order][:postcode]
+#      @sa.address = params[:order][:address]
+#      @sa.addressee = params[:order][:addressee]
+#      @sa.save
+#    end
+
       current_member.cart_items.destroy_all
       redirect_to members_thanks_path
-  end
-
-  def confirm
-    @order = Order.new(order_params)
-    @carts = current_member.cart_items
-    @tax = 1.1
-    if params[:shipping_address] == "1"
-      @order.postcode = current_member.postcode
-      @order.address = current_member.address
-      @order.addressee = current_member.last_name + current_member.first_name
-    elsif params[:shipping_address] == "2"
-      @shipping_address = ShippingAddress.find_by(params[:order][:shipping_address])
-      @order.postcode = @shipping_address.postcode
-      @order.address = @shipping_address.address
-      @order.addressee = @shipping_address.addressee
-    end
   end
 
   def update
@@ -63,6 +83,10 @@ class Members::OrdersController < ApplicationController
 
   def order_product_params
     params.permit(:product_id, :order_id, :purchase_price, :number, :production_status)
+  end
+
+  def shipping_address_params
+    params.permit(:member_id, :postcode, :address, :addressee)
   end
 
 end

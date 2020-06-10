@@ -4,7 +4,7 @@
             <h2 class="text-center table-active">ショッピングカート</h2>
         </div>
         <div class="col text-right">
-        	<%=link_to "カートを空にする", members_cart_destroy_all_path, class: "btn btn-danger" %>
+        	<%=link_to "カートを空にする", members_cart_destroy_all_path, method: :delete, class: "btn btn-danger" %>
         </div>
     </div>
     <div class="row">
@@ -29,7 +29,7 @@
 							</td>
 							<td class="align-middle"><%= (cart.product.unit_price * @tax).round %></td>
 							<td class="align-middle">
-								<%= form_with model: cart, url: members_cart_item_path, method: :patch, local: true do |item| %>
+								<%= form_with model: cart, url: members_cart_item_path(cart), method: :patch, local: true do |item| %>
 									<%= item.number_field :number, style: "width: 50px;" %>
 									<%= item.submit "変更", class: "btn btn-primary" %>
 								<% end %>
@@ -47,7 +47,7 @@
 	
 	<div class="row">
 		<div class="col-2">
-			<%= link_to "買い物を続ける", members_products_path, class: "btn btn-primary" %>
+			<%= link_to "買い物を続ける", root_path, class: "btn btn-primary" %>
 		</div>
 		<div class="col-3 offset-7">
 			<table class="table table-bordered">

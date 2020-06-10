@@ -1,4 +1,5 @@
 class Members::CartItemsController < ApplicationController
+	before_action :authenticate_member!
 	def show
 		@carts = current_member.cart_items
 		@tax = 1.1
@@ -6,17 +7,15 @@ class Members::CartItemsController < ApplicationController
 
 	def create
 		@cart = CartItem.new(cart_item_params)
+		@cart.member_id = current_member.id
 		@cart.save
 		redirect_to members_cart_item_path(current_member)
 	end
 
 	def update
 		@cart = CartItem.find(params[:id])
-		if @cart.update(cart_item_params)
+		@cart.update(cart_item_params)
 		redirect_to members_cart_item_path
-		else
-		redirect_to members_products_path
-		end
 	end
 
 	def destroy
@@ -28,7 +27,7 @@ class Members::CartItemsController < ApplicationController
 	def destroy_all
 		@carts = current_member.cart_items
 		@carts.destroy_all
-		redirect_to members_products_path
+		redirect_back(fallback_location: root_path)
 	end
 
 	private
