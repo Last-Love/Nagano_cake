@@ -156,7 +156,8 @@ GEM
     orm_adapter (0.5.0)
     popper_js (1.16.0)
     public_suffix (4.0.5)
-    puma (3.12.6)
+    puma (4.3.12)
+      nio4r (~> 2.0)
     rack (2.2.2)
     rack-protection (2.0.8.1)
       rack
@@ -285,7 +286,7 @@ DEPENDENCIES
   jquery-rails
   kaminari (~> 1.2.1)
   listen (>= 3.0.5, < 3.2)
-  puma (~> 3.11)
+  puma (~> 4.3)
   rails (~> 5.2.4, >= 5.2.4.3)
   refile!
   refile-mini_magick
